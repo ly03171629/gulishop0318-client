@@ -53,3 +53,24 @@ export const reqLogin = (userInfo) => Ajax.post('/user/passport/login',userInfo)
 
 //请求退出登录 /api/user/passport/logout  get
 export const reqLogout = () => Ajax.get('/user/passport/logout')
+
+//请求订单交易信息 /api/order/auth/trade
+export const reqTradeInfo = () => Ajax.get('/order/auth/trade')
+
+
+//请求提交订单（其实本质就是创建订单，返回的是订单编号）
+// /api/order/auth/submitOrder?tradeNo={tradeNo}   post  
+export const reqSubmitOrder = (tradeNo,tradeInfo) =>Ajax.post(`/order/auth/submitOrder?tradeNo=${tradeNo}`,tradeInfo)
+
+//请求获取订单信息 /api/payment/weixin/createNative/{orderId}  get
+export const reqOrderInfo = (orderId) => Ajax.get(`/payment/weixin/createNative/${orderId}`)
+
+//请求查看订单的支付状态信息 /api/payment/weixin/queryPayStatus/{orderId}  get
+// 返回状态200代表支付成功   205代表支付中
+
+export const reqPayStatus = (orderId) => Ajax.get(`/payment/weixin/queryPayStatus/${orderId}`)
+
+
+//请求获取我的订单分页信息   /api/order/auth/{page}/{limit}   get
+
+export const reqMyOrder = (page,limit) => Ajax.get(`/order/auth/${page}/${limit}`)

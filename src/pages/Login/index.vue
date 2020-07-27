@@ -73,12 +73,13 @@
 </template>
 
 <script>
+import store from '@/store'
 export default {
   name: "Login",
   data() {
     return {
       mobile: "",
-      password: ""
+      password: "",
     };
   },
   methods: {
@@ -87,15 +88,38 @@ export default {
       if (mobile && password) {
         let userInfo = { mobile, password };
         try {
-          await this.$store.dispatch("userLogin",userInfo);
-          alert('登录成功，跳转到首页去了')
-          this.$router.push('/home')
+          await this.$store.dispatch("userLogin", userInfo);
+          let redirectPath = this.$route.query.redirect;
+          if (redirectPath) {
+            //代表是从导航守卫进来的登录逻辑
+            this.$router.push(redirectPath);
+          } else {
+            //代表不是从导航守卫来的登录逻辑
+            this.$router.push("/home");
+          }
         } catch (error) {
-          alert(error.message)
+          alert(error.message);
         }
       }
-    }
-  }
+    },
+  },
+  // beforeRouteEnter(to, from, next) {
+  //   // 在渲染该组件的对应路由被 confirm 前调用
+  //   // 不！能！获取组件实例 `this`
+  //   // 因为当守卫执行前，组件实例还没被创建
+  //   // 如果内部需要用到this，那么就得用下面的那个写法
+  //   if (!store.state.user.userInfo.name) {
+  //     next();
+  //   } else {
+  //     next("/");
+  //   }
+  // },
+
+  // beforeRouteEnter(to, from, next) {
+  //   next((vm) => {
+  //     // 通过 `vm` 访问组件实例 vm就是你之前想要的this
+  //   });
+  // },
 };
 </script>
 
